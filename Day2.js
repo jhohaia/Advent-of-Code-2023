@@ -10,31 +10,32 @@ const lines = data.split("\n");
 let totalScore = 0;
 
 lines.forEach((line) => {
-  const [opponent, myChoice] = line.split(" ");
+  const [gameId, cubeSets] = line.split(": ");
+  let isPossible = true;
 
-  let roundScore = 0;
+  cubeSets.split("; ").forEach((set) => {
+    const cubes = set.split(", ");
 
-  // Score for the shape you selected
-  if (myChoice === "X") roundScore += 1; // Rock
-  else if (myChoice === "Y") roundScore += 2; // Paper
-  else if (myChoice === "Z") roundScore += 3; // Scissors
+    cubes.forEach((cube) => {
+      const [num, color] = cube.split(" ");
 
-  // Score for the outcome of the round
-  if (
-    (opponent === "A" && myChoice === "Y") || // You win
-    (opponent === "B" && myChoice === "Z") ||
-    (opponent === "C" && myChoice === "X")
-  ) {
-    roundScore += 6;
-  } else if (
-    (opponent === "A" && myChoice === "X") || // Draw
-    (opponent === "B" && myChoice === "Y") ||
-    (opponent === "C" && myChoice === "Z")
-  ) {
-    roundScore += 3;
+      if (
+        (color === "red" && num > 12) ||
+        (color === "green" && num > 13) ||
+        (color === "blue" && num > 14)
+      ) {
+        isPossible = false;
+      }
+    });
+
+    if (!isPossible) {
+      return;
+    }
+  });
+
+  if (isPossible) {
+    totalScore += parseInt(gameId.replace("Game ", ""));
   }
-
-  totalScore += roundScore;
 });
 
-console.log(totalScore);
+console.log("Total Score: ", totalScore);
