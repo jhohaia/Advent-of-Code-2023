@@ -39,3 +39,34 @@ lines.forEach((line) => {
 });
 
 console.log("Total Score: ", totalScore);
+
+// --- Part Two ---
+
+let totalPower2 = 0;
+
+lines.forEach((line) => {
+  const cubeSets = line.split(": ")[1];
+  let maxRed = 0,
+    maxGreen = 0,
+    maxBlue = 0;
+
+  cubeSets.split("; ").forEach((set) => {
+    const cubes = set.split(", ");
+
+    cubes.forEach((cube) => {
+      const [num, color] = cube.split(" ");
+
+      if (color === "red" && Number(num) > maxRed) {
+        maxRed = Number(num);
+      } else if (color === "green" && Number(num) > maxGreen) {
+        maxGreen = Number(num);
+      } else if (color === "blue" && Number(num) > maxBlue) {
+        maxBlue = Number(num);
+      }
+    });
+  });
+
+  totalPower2 += maxRed * maxGreen * maxBlue;
+});
+
+console.log("Total Power: ", totalPower2);
